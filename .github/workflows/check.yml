@@ -1,0 +1,29 @@
+name: 'Format, lint and check for code errors'
+
+on:
+    push:
+        paths-ignore:
+            - '**.md'
+        branches:
+            - master
+    schedule:
+        - cron: '0 0 1 * *'
+    create:
+        tags:
+            - '*'
+
+jobs:
+    check:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                script: [check-prettier, lint, compile]
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+
+            - name: Install packages
+              run: yarn
+
+            - name: Main script
+              run: yarn ${{ matrix.script }}
