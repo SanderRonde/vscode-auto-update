@@ -14,8 +14,8 @@
 		"lint": "eslint src --ext ts --cache",
 		"format": "prettier --write src/",
 		"check-prettier": "yarn prettier --check src/",
-		"build": "esbuild --bundle --minify --outfile=dist/index.js src/index.ts",
-		"build:debug": "esbuild --bundle --outfile=dist/index.js src/index.ts"
+		"build": "esbuild --bundle --minify --platform=node --outfile=dist/index.js --external:vscode --external:tar --external:compare-versions src/index.ts",
+		"build:debug": "esbuild --bundle --platform=node --outfile=dist/index.js --external:vscode --external:tar --external:compare-versions src/index.ts"
 	},
 	"devDependencies": {
 		"@types/node": "^18.11.9",
