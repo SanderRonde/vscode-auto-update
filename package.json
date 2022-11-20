@@ -1,17 +1,19 @@
 {
 	"name": "template",
 	"version": "1.0.0",
-	"main": "index.js",
+	"main": "dist/index.js",
+	"typings": "dist/src/index.d.ts",
 	"license": "MIT",
 	"author": {
 		"email": "awsdfgvhbjn@gmail.com",
 		"name": "Sander Ronde"
 	},
 	"scripts": {
-    "prepack": "yarn build",
+		"prepack": "yarn build && yarn typings",
 		"prepush": "yarn compile && yarn lint && yarn format && yarn check-prettier",
-		"compile": "tsc",
-		"watch": "tsc --watch",
+		"compile": "tsc --noEmit",
+		"watch": "tsc --noEmit --watch",
+		"typings": "tsc --emitDeclarationOnly",
 		"lint": "eslint src --ext ts --cache",
 		"format": "prettier --write src/",
 		"check-prettier": "yarn prettier --check src/",

@@ -11,8 +11,9 @@
 		"noUnusedParameters": true,
 		"noImplicitOverride": true,
 		"skipLibCheck": true,
-		"noEmit": true,
-		"jsx": "react"
+		"jsx": "react",
+		"declarationDir": "dist",
+		"declaration": true
 	},
 	"include": ["./src"]
 }
