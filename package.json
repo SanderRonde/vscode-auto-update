@@ -8,6 +8,10 @@
 		"email": "awsdfgvhbjn@gmail.com",
 		"name": "Sander Ronde"
 	},
+	"files": [
+		"dist/",
+		"package.json"
+	],
 	"scripts": {
 		"prepack": "yarn build && yarn typings",
 		"prepush": "yarn compile && yarn lint && yarn format && yarn check-prettier",
