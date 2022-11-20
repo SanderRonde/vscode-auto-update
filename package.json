@@ -8,6 +8,7 @@
 		"name": "Sander Ronde"
 	},
 	"scripts": {
+    "prepack": "yarn build",
 		"prepush": "yarn compile && yarn lint && yarn format && yarn check-prettier",
 		"compile": "tsc",
 		"watch": "tsc --watch",
