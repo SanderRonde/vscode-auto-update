@@ -4,7 +4,7 @@ VSCode library that allows private extensions to automatically update
 
 ## How to use
 
-- install from NPM
+- install [package](https://www.npmjs.com/package/vscode-auto-update) (`vscode-auto-update`)
 - import checker `import { AutoUpdateChecker } from 'vscode-auto-update'`
 - add [relevant fields](#packagejson-config) to `package.json`
 - start checker `new AutoUpdateChecker({ ... })` (check [options](#options) for params)
