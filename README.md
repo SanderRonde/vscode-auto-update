@@ -29,6 +29,10 @@ To use this extension, ensure the following:
 
 # Change Log
 
+## 1.0.2
+
+-   Reduce reload wait time (from 10s to 5s)
+
 ## 1.0.1
 
 -   Reduce unnecessary files in package
