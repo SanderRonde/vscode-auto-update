@@ -1,5 +1,6 @@
 import { fetchRegistry, findPathsRecursively } from './helpers';
 import { commands, extensions, Uri, window } from 'vscode';
+import { RELOAD_WAIT_TIME } from './constants';
 import type { ExtensionContext } from 'vscode';
 import type { UpdateResult } from './checker';
 import * as fs from 'fs/promises';
@@ -89,7 +90,7 @@ async function _performUpdate(
 	);
 
 	await Promise.race([
-		new Promise((resolve) => setTimeout(resolve, 10 * 1000)),
+		new Promise((resolve) => setTimeout(resolve, RELOAD_WAIT_TIME)),
 		new Promise((resolve) => extensions.onDidChange(resolve)),
 	]);
 	void window
