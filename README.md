@@ -30,6 +30,10 @@ To use this extension, ensure the following:
 
 # Change Log
 
+## 1.0.3
+
+-   Support force-updating
+
 ## 1.0.2
 
 -   Reduce reload wait time (from 10s to 5s)
