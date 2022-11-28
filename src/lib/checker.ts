@@ -23,6 +23,7 @@ export interface UpdateCheckResultSuccess {
 	updateAvailable: boolean;
 	currentVersion: string;
 	latestVersion: string;
+	registryResponse: RegistryResponse;
 }
 
 export type UpdateCheckResult =
@@ -60,6 +61,12 @@ export interface UpdateConfig {
 	 */
 	requireUserConfirmation: boolean;
 	/**
+	 * If provided, force update without asking for user confirmation if a version
+	 * with the given tag exists in the registry.
+	 * @see https://docs.npmjs.com/cli/v9/commands/npm-dist-tag
+	 */
+	forceUpdateOnTag?: string;
+	/**
 	 * Warn the user when checking fails or not. Ignore is generally best here
 	 * since the user being offline should not warrant a warning.
 	 */
@@ -82,16 +89,40 @@ export interface UpdateConfig {
 }
 
 export class AutoUpdateChecker implements Disposable {
-	#interval: NodeJS.Timeout;
+	private readonly _interval: NodeJS.Timeout;
 
 	public constructor(private readonly _config: UpdateConfig) {
-		this.#interval = setInterval(
+		this._interval = setInterval(
 			() => void this.forceCheckUpdates(),
 			this._config.checkInterval ?? DEFAULT_CHECK_INTERVAL
 		);
 		setImmediate(() => {
 			void this.forceCheckUpdates();
 		});
+	}
+
+	private async _shouldUpdate(
+		updates: UpdateCheckResultSuccess
+	): Promise<boolean> {
+		if (this._config.forceUpdateOnTag) {
+			// Check if version for given tag is equal to current version
+			const versionForTagged =
+				updates.registryResponse['dist-tags'][
+					this._config.forceUpdateOnTag
+				];
+			if (versionForTagged === updates.latestVersion) {
+				return true;
+			}
+		}
+		const choice = await window.showInformationMessage(
+			`${this._config.friendlyName}: update available`,
+			'Update'
+		);
+		if (choice === 'Update') {
+			return true;
+		}
+		// Don't auto-update anymore for the rest of this session
+		return false;
 	}
 
 	public async getUpdates(): Promise<UpdateCheckResult> {
@@ -114,6 +145,7 @@ export class AutoUpdateChecker implements Disposable {
 			currentVersion,
 			latestVersion,
 			updateAvailable: compare(currentVersion, latestVersion, '<'),
+			registryResponse: response,
 		};
 	}
 
@@ -145,15 +177,12 @@ export class AutoUpdateChecker implements Disposable {
 				didUpdate: false,
 			};
 		}
+
 		if (
 			result === UPDATE_CALLBACK_RESULT.DEFAULT_BEHAVIOR &&
 			this._config.requireUserConfirmation
 		) {
-			const choice = await window.showInformationMessage(
-				`${this._config.friendlyName}: update available`,
-				'Update'
-			);
-			if (choice !== 'Update') {
+			if (!(await this._shouldUpdate(updates))) {
 				// Don't auto-update anymore for the rest of this session
 				this.dispose();
 				return {
@@ -175,6 +204,6 @@ export class AutoUpdateChecker implements Disposable {
 	}
 
 	public dispose(): void {
-		clearInterval(this.#interval);
+		clearInterval(this._interval);
 	}
 }

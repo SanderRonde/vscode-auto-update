@@ -21,6 +21,7 @@ To use this extension, ensure the following:
 
 -   `config.friendlyName (string)` - Friendly name of extension, is displayed to the user when prompting for update permission
 -   `config.requireUserConfirmation (bool)` - Whether to wait for user approval or to just install immediately
+-   `config.forceUpdateOnTag (string, optional)` - If provided, force update without asking for user confirmation if a version with the given tag exists in the registry. See [npm docs](https://docs.npmjs.com/cli/v9/commands/npm-dist-tag) for more info on dist tags.
 -   `config.onCheckFail ('notify'|'ignore')` - Warn the user when checking fails or not. Ignore is generally best here since the user being offline should not warrant a warning.
 -   `config.onUpdateAvailable (callback, optional)` - Optional callback that can change behavior of installation
 -   `config.checkInterval (number, default 1 hour)` - Interval by which checking occurs

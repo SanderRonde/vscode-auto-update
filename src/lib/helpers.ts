@@ -16,9 +16,7 @@ interface RegistryResponseVersion {
 export interface RegistryResponse {
 	name: string;
 	versions: Record<string, RegistryResponseVersion>;
-	'dist-tags': {
-		latest: string;
-	};
+	'dist-tags': Record<string, string>;
 }
 
 export interface Package {
