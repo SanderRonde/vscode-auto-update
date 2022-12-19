@@ -83,6 +83,11 @@ async function _performUpdate(
 		};
 	}
 
+	// Attach listener early
+	const onExtensionsChange = new Promise((resolve) =>
+		extensions.onDidChange(resolve)
+	);
+
 	// Update!
 	void commands.executeCommand(
 		'workbench.extensions.installExtension',
@@ -91,7 +96,7 @@ async function _performUpdate(
 
 	await Promise.race([
 		new Promise((resolve) => setTimeout(resolve, RELOAD_WAIT_TIME)),
-		new Promise((resolve) => extensions.onDidChange(resolve)),
+		onExtensionsChange,
 	]);
 	void window
 		.showInformationMessage(
@@ -103,6 +108,7 @@ async function _performUpdate(
 				void commands.executeCommand('workbench.action.reloadWindow');
 			}
 		});
+
 	return {
 		didUpdate: true,
 		updateStatus: 'success',
