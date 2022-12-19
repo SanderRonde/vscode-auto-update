@@ -30,6 +30,11 @@ To use this extension, ensure the following:
 
 # Change Log
 
+## 1.0.4
+
+-   Reduce reload wait time even more (5s to 3s)
+-   Make it so on-extensions-changed listener is placed before install action.
+
 ## 1.0.3
 
 -   Support force-updating
