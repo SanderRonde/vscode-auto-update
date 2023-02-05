@@ -76,7 +76,7 @@ export interface UpdateConfig {
 	 */
 	onUpdateAvailable?: (
 		result: UpdateCheckResultSuccess
-	) => UPDATE_CALLBACK_RESULT | void;
+	) => UPDATE_CALLBACK_RESULT | Promise<UPDATE_CALLBACK_RESULT> | void;
 	/**
 	 * Interval by which checking occurs
 	 * @default 3600000
@@ -168,7 +168,7 @@ export class AutoUpdateChecker implements Disposable {
 		}
 
 		const result =
-			this._config.onUpdateAvailable?.(updates) ??
+			(await this._config.onUpdateAvailable?.(updates)) ??
 			UPDATE_CALLBACK_RESULT.DEFAULT_BEHAVIOR;
 
 		if (result === UPDATE_CALLBACK_RESULT.IGNORE) {
