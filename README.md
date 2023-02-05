@@ -30,6 +30,10 @@ To use this extension, ensure the following:
 
 # Change Log
 
+## 1.0.5
+
+-   `onUpdateAvailable` can now return a promise
+
 ## 1.0.4
 
 -   Reduce reload wait time even more (5s to 3s)
