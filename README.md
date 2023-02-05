@@ -31,6 +31,10 @@ To use this extension, ensure the following:
 
 # Change Log
 
+## 1.0.6
+
+-   Add `onUpdateInstalled` callback
+
 ## 1.0.5
 
 -   `onUpdateAvailable` can now return a promise
