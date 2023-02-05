@@ -78,6 +78,10 @@ export interface UpdateConfig {
 		result: UpdateCheckResultSuccess
 	) => UPDATE_CALLBACK_RESULT | Promise<UPDATE_CALLBACK_RESULT> | void;
 	/**
+	 * Optional callback that is called when an update is installed
+	 */
+	onUpdateInstalled?: (result: UpdateCheckResultSuccess) => void;
+	/**
 	 * Interval by which checking occurs
 	 * @default 3600000
 	 */
@@ -194,7 +198,10 @@ export class AutoUpdateChecker implements Disposable {
 
 		const updateSuccess = await performUpdate(
 			this._config.friendlyName,
-			this._config.remote
+			this._config.remote,
+			this._config.onUpdateInstalled
+				? () => this._config.onUpdateInstalled!(updates)
+				: undefined
 		);
 
 		return {

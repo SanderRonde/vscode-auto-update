@@ -55,7 +55,8 @@ async function downloadTarball(
 
 async function _performUpdate(
 	friendlyName: string,
-	remoteConfig: RemoteConfig
+	remoteConfig: RemoteConfig,
+	onUpdateInstalled?: () => void
 ): Promise<UpdateResult> {
 	const response = await fetchRegistry(remoteConfig);
 
@@ -94,20 +95,26 @@ async function _performUpdate(
 		Uri.file(matches[0])
 	);
 
-	await Promise.race([
-		new Promise((resolve) => setTimeout(resolve, RELOAD_WAIT_TIME)),
-		onExtensionsChange,
-	]);
-	void window
-		.showInformationMessage(
-			`${friendlyName}: extension was updated, please reload the window`,
-			'Reload Window'
-		)
-		.then((choice) => {
-			if (choice === 'Reload Window') {
-				void commands.executeCommand('workbench.action.reloadWindow');
-			}
-		});
+	if (onUpdateInstalled) {
+		onUpdateInstalled();
+	} else {
+		await Promise.race([
+			new Promise((resolve) => setTimeout(resolve, RELOAD_WAIT_TIME)),
+			onExtensionsChange,
+		]);
+		void window
+			.showInformationMessage(
+				`${friendlyName}: extension was updated, please reload the window`,
+				'Reload Window'
+			)
+			.then((choice) => {
+				if (choice === 'Reload Window') {
+					void commands.executeCommand(
+						'workbench.action.reloadWindow'
+					);
+				}
+			});
+	}
 
 	return {
 		didUpdate: true,
@@ -117,10 +124,11 @@ async function _performUpdate(
 
 export async function performUpdate(
 	friendlyName: string,
-	remoteConfig: RemoteConfig
+	remoteConfig: RemoteConfig,
+	onUpdateInstalled?: () => void
 ): Promise<UpdateResult> {
 	try {
-		return _performUpdate(friendlyName, remoteConfig);
+		return _performUpdate(friendlyName, remoteConfig, onUpdateInstalled);
 	} catch (e) {
 		if (e instanceof UpdateError) {
 			return {

@@ -24,6 +24,7 @@ To use this extension, ensure the following:
 -   `config.forceUpdateOnTag (string, optional)` - If provided, force update without asking for user confirmation if a version with the given tag exists in the registry. See [npm docs](https://docs.npmjs.com/cli/v9/commands/npm-dist-tag) for more info on dist tags.
 -   `config.onCheckFail ('notify'|'ignore')` - Warn the user when checking fails or not. Ignore is generally best here since the user being offline should not warrant a warning.
 -   `config.onUpdateAvailable (callback, optional)` - Optional callback that can change behavior of installation
+-   `config.onUpdateInstalled (callback, optional)` - Optional callback that can change behavior after updating
 -   `config.checkInterval (number, default 1 hour)` - Interval by which checking occurs
 -   `config.remote (object)` - contains info about remote to use
 -   `config.remote.context (ExtensionContext)` - VSCode extension context. Used to determine remote (see below).
