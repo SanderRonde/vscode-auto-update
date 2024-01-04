@@ -8,6 +8,11 @@
 		"email": "awsdfgvhbjn@gmail.com",
 		"name": "Sander Ronde"
 	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/sanderronde/vscode-auto-update"
+	},
+	"homepage": "https://github.com/sanderronde/vscode-auto-update/blob/main.README.md",
 	"files": [
 		"dist/",
 		"package.json"
